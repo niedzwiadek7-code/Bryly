@@ -1,11 +1,14 @@
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 public class Window extends JFrame implements ActionListener {
 
     SVGGraphic svg = new SVGGraphic();
     MenuBar menu = new MenuBar();
+    Block block;
     Transformation transformationMatrix = new Transformation(svg);
 
     public Window() {
@@ -22,7 +25,7 @@ public class Window extends JFrame implements ActionListener {
 
     public void actionPerformed(java.awt.event.ActionEvent e) {
         switch (e.getActionCommand()) {
-            case "Wczytaj bryłę" -> System.out.println("Wczytaj bryłę");
+            case "Wczytaj bryłę" -> openFile();
             case "Wskaż punkty odniesienia" -> System.out.println("Wskaż punkty odniesienia");
             case "Wyświetl w modelu drucianym" -> System.out.println("Wyświetl w modelu drucianym");
             case "Wyświetl w perspektywie" -> System.out.println("Wyświetl w perspektywie");
@@ -39,5 +42,16 @@ public class Window extends JFrame implements ActionListener {
         menu.point.addActionListener(this);
         menu.wire.addActionListener(this);
         menu.perspective.addActionListener(this);
+    }
+
+    private void openFile() {
+        JFileChooser open = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("JSON files", "json");
+        open.setFileFilter(filter);
+        int result = open.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            String selectedFile = open.getSelectedFile().getAbsolutePath();
+            block = new Block(selectedFile);
+        }
     }
 }
