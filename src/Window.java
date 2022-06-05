@@ -26,7 +26,10 @@ public class Window extends JFrame implements ActionListener {
     public void actionPerformed(java.awt.event.ActionEvent e) {
         switch (e.getActionCommand()) {
             case "Wczytaj bryłę" -> openFile();
-            case "Wskaż punkty odniesienia" -> System.out.println("Wskaż punkty odniesienia");
+            case "Rotacja" -> transformationMatrix.rotation();
+            case "Skalowanie" -> transformationMatrix.scale();
+            case "Przesunięcie" -> transformationMatrix.translation();
+            case "Odległość od rzutni" -> System.out.println("Odległość od rzutni");
             case "Wyświetl w modelu drucianym" -> System.out.println("Wyświetl w modelu drucianym");
             case "Wyświetl w perspektywie" -> System.out.println("Wyświetl w perspektywie");
         }
@@ -39,7 +42,12 @@ public class Window extends JFrame implements ActionListener {
 
     public void setUpListener() {
         menu.read.addActionListener(this);
-        menu.point.addActionListener(this);
+
+        menu.rotation.addActionListener(this);
+        menu.scale.addActionListener(this);
+        menu.translation.addActionListener(this);
+
+        menu.distance.addActionListener(this);
         menu.wire.addActionListener(this);
         menu.perspective.addActionListener(this);
     }

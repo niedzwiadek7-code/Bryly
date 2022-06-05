@@ -12,7 +12,7 @@ public class Transformation extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //        setSize(400, 400);
         setLayout(new FlowLayout(FlowLayout.CENTER, 2, 2));
-        this.matrix = new double[][]{{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
+        this.matrix = new double[][]{{1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}};
         this.svg = svg;
 
         // create text area
@@ -24,6 +24,58 @@ public class Transformation extends JFrame {
 
         matchTheContent();
         setVisible(true);
+    }
+
+    public void translation() {
+        double tx = Double.parseDouble(
+                JOptionPane.showInputDialog("Podaj dane dla współrzędnej x:")
+        );
+        double ty = Double.parseDouble(
+                JOptionPane.showInputDialog("Podaj dane dla współrzędnej y:")
+        );
+        double tz = Double.parseDouble(
+                JOptionPane.showInputDialog("Podaj dane dla współrzędnej z:")
+        );
+
+        double[][] me = new double[][]{{1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {tx, ty, tz, 1}};
+        this.matrix = MatrixOperation.multiply(this.matrix, me);
+
+        printMatrix();
+    }
+
+    public void scale() {
+        double sx = Double.parseDouble(
+                JOptionPane.showInputDialog("Podaj dane dla współrzędnej x:")
+        );
+        double sy = Double.parseDouble(
+                JOptionPane.showInputDialog("Podaj dane dla współrzędnej y:")
+        );
+        double sz = Double.parseDouble(
+                JOptionPane.showInputDialog("Podaj dane dla współrzędnej z:")
+        );
+
+        double[][] me = new double[][]{{sx, 0, 0, 0}, {0, sy, 0, 0}, {0, 0, sz, 0}, {0, 0, 0, 1}};
+        this.matrix = MatrixOperation.multiply(this.matrix, me);
+
+        printMatrix();
+    }
+
+    public void rotation() {
+        double angle = Double.parseDouble(
+                JOptionPane.showInputDialog("Podaj dane dla kąta:")
+        );
+        String axis = JOptionPane.showInputDialog("Podaj oś: (x, y, z)");
+
+        double[][] me = new double[][]{{1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}};
+        switch (axis) {
+            case "x" -> me = new double[][]{{1, 0, 0, 0}, {0, Math.cos(angle), Math.sin(angle), 0}, {0, -Math.sin(angle), Math.cos(angle), 0}, {0, 0, 0, 1}};
+            case "y" -> me = new double[][]{{Math.cos(angle), 0, -Math.sin(angle), 0}, {0, 1, 0, 0}, {Math.sin(angle), 0, Math.cos(angle), 0}, {0, 0, 0, 1}};
+            case "z" -> me = new double[][]{{Math.cos(angle), Math.sin(angle), 0, 0}, {-Math.sin(angle), Math.cos(angle), 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}};
+        }
+
+        this.matrix = MatrixOperation.multiply(this.matrix, me);
+
+        printMatrix();
     }
 
     public void reset() {
@@ -40,9 +92,9 @@ public class Transformation extends JFrame {
         textArea.setText(null);
         textArea.append("Macierz:\n");
 
-        for (int i = 0; i < this.matrix.length; i++) {
-            for (int j = 0; j < this.matrix[i].length; j++) {
-                textArea.append(String.format("%5f", matrix[i][j]) + "    ");
+        for (double[] doubles : this.matrix) {
+            for (double aDouble : doubles) {
+                textArea.append(String.format("%5f", aDouble) + "    ");
             }
             textArea.append("\n");
         }
