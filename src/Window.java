@@ -29,7 +29,7 @@ public class Window extends JFrame implements ActionListener {
             case "Rotacja" -> transformationMatrix.rotation();
             case "Skalowanie" -> transformationMatrix.scale();
             case "Przesunięcie" -> transformationMatrix.translation();
-            case "Odległość od rzutni" -> System.out.println("Odległość od rzutni");
+            case "Odległość od rzutni" -> this.block.setDistance();
             case "Wyświetl w modelu drucianym" -> System.out.println("Wyświetl w modelu drucianym");
             case "Wyświetl w perspektywie" -> System.out.println("Wyświetl w perspektywie");
         }
